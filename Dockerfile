@@ -33,8 +33,7 @@ RUN add-pkg \
   mono-complete \
   libhunspell-dev \
   libmpv-dev \
-  tesseract-ocr \
-  tesseract-ocr-eng \
+  tesseract-ocr-all \
   vlc \
   ffmpeg
 
@@ -53,7 +52,8 @@ COPY rootfs/ /
 
 # Set environment variables.
 ENV APP_NAME="Subtitle Edit" \
-  S6_KILL_GRACETIME=8000
+  S6_KILL_GRACETIME=8000 \
+  ENABLE_CJK_FONT=1
 
 # Define mountable directories.
 VOLUME ["/config"]
