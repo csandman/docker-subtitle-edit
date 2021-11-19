@@ -26,7 +26,10 @@ RUN add-pkg --virtual build-dependencies \
   && unzip /tmp/se.zip -d /defaults \
   # Cleanup.
   && del-pkg build-dependencies \
-  && rm -rf /tmp/* /tmp/.[!.]*
+  && rm -rf /tmp/* /tmp/.[!.]* \
+  && rm -rf /defaults/Tesseract302 \
+  && rm -f /defaults/Hunspellx86.dll \
+  && rm -f /defaults/Hunspellx64.dll
 
 # Install dependencies.
 RUN add-pkg \
