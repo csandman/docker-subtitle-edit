@@ -24,25 +24,13 @@ RUN add-pkg --virtual build-dependencies \
   # Download.
   && curl -# -L -o /tmp/se.zip ${SUBTITLEEDIT_URL} \
   && unzip /tmp/se.zip -d /defaults \
-  # && mv -v /tmp/SE363/* /defaults/ \
   # Cleanup.
   && del-pkg build-dependencies \
   && rm -rf /tmp/* /tmp/.[!.]*
 
-# RUN \
-#   add-pkg --virtual build-dependencies \
-#   curl \
-#   && \
-#   mkdir -p /defaults && \
-#   # Download.
-#   curl -# -L -o /defaults/JDownloader.jar ${SUBTITLEEDIT_URL} && \
-#   # Cleanup.
-#   del-pkg build-dependencies && \
-#   rm -rf /tmp/* /tmp/.[!.]*
-
 # Install dependencies.
 RUN add-pkg \
-  mono-runtime \
+  mono-complete \
   libhunspell-dev \
   libmpv-dev \
   tesseract-ocr \
@@ -57,7 +45,7 @@ RUN \
 
 # Generate and install favicons.
 RUN \
-  APP_ICON_URL=https://raw.githubusercontent.com/SubtitleEdit/subtitleedit/master/installer/Icons/WizardSmallImageFile.bmp && \
+  APP_ICON_URL=https://raw.githubusercontent.com/csandman/docker-subtitle-edit/master/se-icon.png?token=ACGJR47ZCPDPMXPTDGIDYFTBUBDYO && \
   install_app_icon.sh "$APP_ICON_URL"
 
 # Add files.
@@ -70,10 +58,6 @@ ENV APP_NAME="Subtitle Edit" \
 # Define mountable directories.
 VOLUME ["/config"]
 VOLUME ["/data"]
-
-# Expose ports.
-#   - 3129: For MyJDownloader in Direct Connection mode.
-EXPOSE 3129
 
 # Metadata.
 LABEL \
