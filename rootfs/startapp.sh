@@ -16,4 +16,5 @@
 # # Make sure mandatory directories exist.
 # mkdir -p /config/logs
 
+export MONO_MWF_SCALING=disable
 mono /defaults/SubtitleEdit.exe --window max
