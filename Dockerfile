@@ -5,7 +5,7 @@
 #
 
 # Pull base image.
-FROM jlesage/baseimage-gui:ubuntu-18.04
+FROM jlesage/baseimage-gui:debian-10
 
 # Docker image version is provided via build arg.
 ARG DOCKER_IMAGE_VERSION=unknown
