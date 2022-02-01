@@ -23,7 +23,7 @@ RUN \
   && wget https://github.com/SubtitleEdit/subtitleedit/releases/download/3.6.3/SE363.zip \
   && unzip -d /SubtitleEdit SE363.zip \
   && echo "**** cleanup ****" \
-  && apt remove \
+  && apt remove -y \
   wget \
   unzip \
   && apt-get clean \
