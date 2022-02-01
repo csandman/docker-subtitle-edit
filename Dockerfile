@@ -1,71 +1,46 @@
-#
-# Subtitle Edit Dockerfile
-#
-# https://github.com/csandman/docker-subtitle-edit
-#
 
-# Pull base image.
-FROM jlesage/baseimage-gui:debian-10
+FROM lsiobase/guacgui
+LABEL maintainer="csandman"
 
-# Docker image version is provided via build arg.
-ARG DOCKER_IMAGE_VERSION=unknown
+ENV APP_NAME="subtitle-edit"
 
-# Define software download URLs.
-ARG SUBTITLEEDIT_URL=https://github.com/SubtitleEdit/subtitleedit/releases/download/3.6.3/SE363.zip
+ENV DEBIAN_FRONTEND noninteractive
 
-# Define working directory.
-WORKDIR /tmp
-
-# Download Subtitle Edit.
-RUN add-pkg --virtual build-dependencies \
-  curl \
+RUN \
+  echo "**** install build and runtime packages ****" && \
+  apt-get update --quiet && \
+  apt-get install --quiet --yes --no-install-recommends \
+  wget \
   unzip \
-  && mkdir -p /defaults \
-  # Download.
-  && curl -# -L -o /tmp/se.zip ${SUBTITLEEDIT_URL} \
-  && unzip /tmp/se.zip -d /defaults \
-  # Cleanup.
-  && del-pkg build-dependencies \
-  && rm -rf /tmp/* /tmp/.[!.]* \
-  && rm -rf /defaults/Tesseract302 \
-  && rm -f /defaults/Hunspellx86.dll \
-  && rm -f /defaults/Hunspellx64.dll
-
-# Install dependencies.
-RUN add-pkg \
-  mono-complete \
   libhunspell-dev \
   libmpv-dev \
   tesseract-ocr-all \
   vlc \
-  ffmpeg
+  ffmpeg \
+  mono-xsp4 \
+  && echo "**** install subtitleedit ****" \
+  && mkdir /SubtitleEdit \
+  && wget https://github.com/SubtitleEdit/subtitleedit/releases/download/3.6.3/SE363.zip \
+  && unzip -d /SubtitleEdit SE363.zip \
+  && echo "**** cleanup ****" \
+  && apt remove \
+  wget \
+  unzip \
+  && apt-get clean \
+  && rm -rf \
+  /tmp/* \
+  /var/lib/apt/lists/* \
+  /var/tmp/* \
+  /SubtitleEdit/Tesseract302 \
+  /SubtitleEdit/Hunspellx86.dll \
+  /SubtitleEdit/Hunspellx64.dll
 
-# Maximize only the main/initial window.
-RUN \
-  sed-patch 's/<application type="normal">/<application type="normal" title="Subtitle Edit">/' \
-  /etc/xdg/openbox/rc.xml
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
-# Generate and install favicons.
-RUN \
-  APP_ICON_URL=https://raw.githubusercontent.com/csandman/docker-subtitle-edit/master/se-icon.png?token=ACGJR47ZCPDPMXPTDGIDYFTBUBDYO && \
-  install_app_icon.sh "$APP_ICON_URL"
+EXPOSE 3389 8080
 
-# Add files.
-COPY rootfs/ /
-
-# Set environment variables.
-ENV APP_NAME="Subtitle Edit" \
-  S6_KILL_GRACETIME=8000 \
-  ENABLE_CJK_FONT=1
-
-# Define mountable directories.
-VOLUME ["/config"]
-VOLUME ["/data"]
-
-# Metadata.
-LABEL \
-  org.label-schema.name="subtitle-edit" \
-  org.label-schema.description="Docker container for Subtitle Edit" \
-  org.label-schema.version="$DOCKER_IMAGE_VERSION" \
-  org.label-schema.vcs-url="https://github.com/csandman/docker-subtitle-edit" \
-  org.label-schema.schema-version="1.0"
+# add local files
+COPY /root /
