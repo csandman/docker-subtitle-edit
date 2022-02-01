@@ -12,12 +12,13 @@ RUN \
   apt-get install --quiet --yes --no-install-recommends \
   wget \
   unzip \
-  tesseract-ocr-all \
+  tesseract-ocr \
+  tesseract-ocr-eng \
   mono-xsp4 \
   && echo "**** install subtitleedit ****" \
   && mkdir /SubtitleEdit \
-  && wget https://github.com/SubtitleEdit/subtitleedit/releases/download/3.6.3/SE363.zip \
-  && unzip -d /SubtitleEdit SE363.zip \
+  && wget https://github.com/SubtitleEdit/subtitleedit/releases/download/3.5.11/SE3511.zip \
+  && unzip -d /SubtitleEdit SE3511.zip \
   && echo "**** cleanup ****" \
   && apt remove -y \
   wget \
