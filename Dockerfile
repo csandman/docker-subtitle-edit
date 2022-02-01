@@ -12,9 +12,7 @@ RUN \
   apt-get install --quiet --yes --no-install-recommends \
   wget \
   unzip \
-  libhunspell-dev \
   tesseract-ocr-all \
-  ffmpeg \
   mono-xsp4 \
   && echo "**** install subtitleedit ****" \
   && mkdir /SubtitleEdit \
