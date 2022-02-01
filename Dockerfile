@@ -13,9 +13,7 @@ RUN \
   wget \
   unzip \
   libhunspell-dev \
-  libmpv-dev \
   tesseract-ocr-all \
-  vlc \
   ffmpeg \
   mono-xsp4 \
   && echo "**** install subtitleedit ****" \
